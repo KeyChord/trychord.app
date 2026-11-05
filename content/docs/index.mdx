@@ -1,0 +1,33 @@
+---
+title: Meet Chord
+description: Memorable key sequences for your Mac. A little vocabulary that goes a long way.
+---
+
+Chord turns a few letters into an action. Open an app, navigate a window, run a shell command, or call your own JavaScript handler, using a sequence you can remember.
+
+Your existing shortcuts keep working. Chord listens for sequences only while you are in **chord mode**.
+
+## One small idea
+
+Hold <kbd>Caps Lock</kbd>, press and hold <kbd>Space</kbd>, then let go of Caps Lock. Type your chord and release Space to run it.
+
+For example, `0,` opens Chord's settings. With the Finder package enabled and Finder focused, `gh` takes you home: **g**o **h**ome.
+
+<Cards>
+  <Card title="Install Chord" href="/docs/getting-started/installation">Download Chord for macOS and grant Accessibility access.</Card>
+  <Card title="Your first chord" href="/docs/getting-started/first-chord">Learn activation, completion, and the built-in commands.</Card>
+  <Card title="Add chord packages" href="/docs/guides/packages">Find ready-made bindings for your everyday applications.</Card>
+  <Card title="Make it yours" href="/docs/guides/configuration">Define a shortcut or shell action in a plain TOML file.</Card>
+</Cards>
+
+## Start small, build from there
+
+**Use what's ready.** The official collection includes packages for Finder, Safari, Chromium browsers, VS Code, JetBrains IDEs, terminal apps, windows, and more. Enable the packages you need in Settings.
+
+**Choose your vocabulary.** App-specific sequences live with their application. Global sequences begin with a symbol and work across apps. Use `,` for your own global chords.
+
+**Go beyond shortcuts.** Handlers run under Bun and can use the built-in `chord` module, shell processes, files, or native add-ons. Start with [creating a package](/docs/developers/create-package), then explore the [scripting API](/docs/developers/scripting).
+
+## About these docs
+
+The getting-started pages introduce the current workflow. The complete existing manuals are preserved in the [Chord manual](/docs/reference/chord-manual), [package reference](/docs/reference/chord-packages), and developer guides.

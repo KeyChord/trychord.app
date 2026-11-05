@@ -1,0 +1,51 @@
+{
+  "name": "@keychord/website",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.4",
+  "sideEffects": false,
+  "scripts": {
+    "dev": "bun --bun vite dev",
+    "build": "bun --bun node_modules/vite/bin/vite.js build",
+    "start": "wrangler dev",
+    "preview": "wrangler dev",
+    "deploy": "bun run build && wrangler deploy",
+    "cf:types": "wrangler types --config .output/server/wrangler.json worker-configuration.d.ts",
+    "types:check": "tsc --noEmit",
+    "docs:import": "bun scripts/import-docs.ts",
+    "packages:import": "bun scripts/import-packages.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@fontsource/noto-sans-symbols-2": "^5.3.0",
+    "@tanstack/react-router": "1.170.45",
+    "@tanstack/react-router-devtools": "1.167.2",
+    "@tanstack/react-start": "1.169.3",
+    "clsx": "^2.1.1",
+    "cn": "^0.5.0",
+    "figma-squircle": "^1.1.0",
+    "fumadocs-core": "16.17.9",
+    "fumadocs-mdx": "15.4.10",
+    "fumadocs-ui": "npm:@fumadocs/base-ui@16.17.9",
+    "lucide-react": "^1.61.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "takumi-js": "^2.17.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/bun": "^1.4.4",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "miniflare": "5.20261023.2-beta",
+    "nitro": "3.0.260903-beta",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "wrangler": "4.155.0"
+  }
+}

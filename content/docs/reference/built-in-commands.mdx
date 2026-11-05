@@ -1,0 +1,42 @@
+---
+title: Built-in commands
+description: Chord's protected controls for settings, layouts, loops, and macros.
+---
+
+Commands beginning with `0` belong to Chord in every focused application. The protected core file is always loaded, even before optional packages, and cannot be disabled or overridden.
+
+## App controls
+
+| Sequence | Action |
+| --- | --- |
+| `0,` | Open Settings |
+| `0,r` | Reload configuration and stop active loops |
+| `0q` | Quit Chord |
+
+## Panel layouts
+
+| Sequence | Action |
+| --- | --- |
+| `0ls` or `0lsl` | Select the left sidebar |
+| `0lf` or `0lfb` | Select the bottom floating panel |
+| `0lv` | Cycle between layouts |
+
+Layout selection persists across launches.
+
+## Loops and macros
+
+| Sequence | Action |
+| --- | --- |
+| `0h<ID>` | Halt the loop with that numeric ID |
+| `0b<digit><sequence>` | Save to temporary buffer 1–9 |
+| `0=<name>=<sequence>` | Save a named macro |
+
+Names beginning with a digit are temporary. Other named macros persist. An empty sequence clears the saved value.
+
+Complete built-in commands using the normal chord completion controls or the [CLI](/docs/developers/scripting#cli).
+
+## Protected namespace
+
+User packages cannot define `0` commands, hints, or `builtin` actions, and user regular expressions cannot intercept the protected commands.
+
+See the [full scripting reference](/docs/developers/scripting#meta-commands-repetition-and-special-keys) for the supported operations and their arguments.

@@ -1,0 +1,71 @@
+---
+title: Your own chords
+description: Define a memorable shortcut or shell command in a TOML file.
+---
+
+## Create a package folder
+
+A simple package needs a `package.json` and a `chords` folder:
+
+```text
+my-chords/
+├── package.json
+└── chords/
+    ├── macos.toml
+    └── com/apple/finder/macos.toml
+```
+
+```json title="package.json"
+{
+  "name": "@your-name/my-chords",
+  "type": "module"
+}
+```
+
+## Add a global chord
+
+Global chords begin with a symbol. Keep them in the package's root `chords/macos.toml`. The comma prefix is the convention for your own global bindings.
+
+```toml title="chords/macos.toml"
+name = 'My Chords'
+
+[chords]
+',t' = { name = 'Open Terminal', shell = 'open -a Terminal' }
+```
+
+Load this folder in **Settings → Chords → Local Folders**. Enter chord mode, type `,t`, and release Space to open Terminal.
+
+Shortcut and shell-only packages do not need a JavaScript build step.
+
+## Add an app-specific chord
+
+App-specific chord files use the application's bundle ID as a folder path. Finder's bundle ID is `com.apple.finder`:
+
+```toml title="chords/com/apple/finder/macos.toml"
+name = 'Finder'
+
+[chords]
+'fn' = { name = 'New Folder', shortcut = 'cmd+shift+n' }
+```
+
+This binding works when Finder is focused. Keep global bindings in `chords/macos.toml`; package builds reject them in nested app files.
+
+## Name and quote your bindings
+
+Every chord has a `name`. Always use single quotes for the sequence key, which also preserves backslashes in special-key notation and patterns.
+
+Use hints to organize related actions:
+
+```toml
+[chords]
+'?f' = { name = 'File' }
+'fn' = { name = 'New Folder', shortcut = 'cmd+shift+n' }
+```
+
+The `0` namespace is reserved for Chord's protected [built-in commands](/docs/reference/built-in-commands).
+
+## Reload and extend
+
+Run `0,r` to reload configuration after editing. If you add TypeScript handlers, build them first; Chord loads `js/`, not `src/`.
+
+Continue with [creating a package](/docs/developers/create-package) for a complete handler example, or read the [scripting API](/docs/developers/scripting) for events and host APIs.

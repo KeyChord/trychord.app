@@ -1,0 +1,59 @@
+---
+title: Installing packages
+description: Add ready-made bindings for your apps, or link a local package.
+---
+
+A chord package contains TOML chord files and, optionally, compiled handlers. Install packages through Chord's settings; the app loads their built files directly.
+
+## Use the official collection
+
+Browse the [official package catalog](/packages) to find chords for your apps, search the collection, and filter by category.
+
+Choose **Add to Chord** on a package to open the app, install it, and reload your chords. Chord must be installed to open these links. Packages already installed keep their current version.
+
+1. Open Settings with `0,`.
+2. Go to **Chords → Chord Monorepos**.
+3. Choose **Add Monorepo** and enter `KeyChord/chords`.
+4. Tick the packages you want under **Packages to use**.
+
+Chord reloads when you change a selection. Use **Sync Latest** to update the monorepo later.
+
+## Pick your apps
+
+| Package                   | Use it for                                                  |
+| ------------------------- | ----------------------------------------------------------- |
+| `chords-com.apple.finder` | Finder navigation and file actions                          |
+| `chords-com.apple.Safari` | Safari                                                      |
+| `chords-chromium`         | Chromium browsers                                           |
+| `chords-vscode`           | Visual Studio Code                                          |
+| `chords-jetbrains`        | JetBrains IDE actions                                       |
+| `chords-terminal`         | Tabs in Terminal, iTerm2, Ghostty and other basic terminals |
+| `chords-warp`             | Warp                                                        |
+| `chords-windows`          | Window actions                                              |
+| `chords-menu`             | Menus and system actions                                    |
+
+The [official package repository](https://github.com/KeyChord/chords) has the complete collection. Individual Apple apps have their own packages; enable the ones you use.
+
+## Install a standalone repository
+
+Use **Settings → Chords → Chord Repos → Add Repo**, then enter `owner/name`.
+
+**Settings → Browse** also offers curated packages. These use mirror repositories, which can lag behind the monorepo. Add `KeyChord/chords` when you want its current versions.
+
+## Load a local folder
+
+Use **Settings → Chords → Local Folders → Add Folder** to load a package you are developing. For an installed repository, use **Link Local Folder** to replace it with a local checkout.
+
+A local source wins over a GitHub source with the same package name. To customize a binding, edit a local copy of the package that owns it. Defining the same sequence in another package is not a reliable override.
+
+## Where packages live
+
+Chord loads all packages from `~/.chord/packages`. Downloaded repositories live under `.sources/github.com/<owner>/<repo>/<full-commit>`, so different revisions stay separate. Local folders and monorepos are linked under `.linked`, and Chord reads through those links. You can also put your own package folder or symlink directly in `~/.chord/packages`.
+
+Existing downloaded packages migrate from the app cache when Chord starts. Hidden managed folders are kept separate from your personal packages.
+
+## Default package precedence
+
+The pinned default `chords-menu` and `chords-com.apple` repositories take precedence over their monorepo copies. Remove those entries under **Chord Repos** if you want the monorepo's versions instead.
+
+See the [package reference](/docs/reference/chord-packages#installing-packages) for the complete source and precedence details.

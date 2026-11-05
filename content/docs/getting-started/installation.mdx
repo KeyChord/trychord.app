@@ -1,0 +1,43 @@
+---
+title: Installation
+description: Install Chord on your Mac and get ready for your first sequence.
+---
+
+## Download Chord
+
+Download the version for your Mac from [trychord.app](https://trychord.app) or the [latest Chord release](https://github.com/KeyChord/Chord/releases/latest):
+
+- **Chord-aarch64.dmg** for Macs with Apple silicon (M1 or later)
+- **Chord-x86_64.dmg** for Intel Macs
+
+To see which you have, choose **About This Mac** from the Apple menu. It shows a chip such as Apple M1, or an Intel processor.
+
+On an Intel Mac, some official packages, including Menu, Windows, Dock and Web, won't fully work yet, because they contain code built only for Apple silicon.
+
+Open the disk image, drag **Chord** into **Applications**, and open it from there. If your Mac asks whether you're sure you want to open it, choose **Open**.
+
+Chord then starts a short guided setup that covers the steps on this page and helps you make your first chord. You can reopen it any time from **Settings → General → Getting Started**. If you opened Chord directly from the disk image by accident, it offers to move itself to Applications.
+
+## Grant Accessibility access
+
+Chord needs macOS Accessibility access to recognize its activation shortcut and handle keys in chord mode.
+
+When prompted, open **System Settings → Privacy & Security → Accessibility** (called **Device Control and Data Access** on macOS 27) and enable **Chord**. Follow any relaunch prompt after changing the permission.
+
+## Open chord mode
+
+1. Hold <kbd>Caps Lock</kbd>.
+2. Press <kbd>Space</kbd> and keep it held.
+3. Release Caps Lock. Keep holding Space.
+
+The chord panel shows your current input and available commands. Type `0,`, then release Space to open Settings.
+
+## Add your apps
+
+Chord installs a few default packages on first launch. To use the current official package collection, open **Settings → Chords → Chord Monorepos**, add `KeyChord/chords`, and select packages under **Packages to use**.
+
+See [installing packages](/docs/guides/packages) for the difference between monorepos, standalone repositories, and local folders.
+
+## Next step
+
+Walk through [your first chord](/docs/getting-started/first-chord), or visit [troubleshooting](/docs/guides/troubleshooting) if the activation shortcut does not open the panel.

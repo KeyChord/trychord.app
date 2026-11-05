@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "chord-website",
+  "account_id": "9d96121bdf76e797697e1cbb3f5c9331",
+  "compatibility_date": "2026-10-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "assets": {
+    "run_worker_first": ["/docs", "/docs/*"]
+  },
+  "routes": [
+    {
+      "pattern": "trychord.app/*",
+      "zone_id": "be4240cf827fe36e05f3a8cadbd0f892"
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}

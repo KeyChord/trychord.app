@@ -1,0 +1,10 @@
+{
+  "title": "Using Chord",
+  "pages": [
+    "chord-mode",
+    "packages",
+    "configuration",
+    "macros-and-repetition",
+    "troubleshooting"
+  ]
+}

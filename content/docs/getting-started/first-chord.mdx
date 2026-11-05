@@ -1,0 +1,45 @@
+---
+title: Your first chord
+description: Activate chord mode, type a sequence, and make something happen.
+---
+
+## Open Settings
+
+This built-in chord works before you install any optional packages.
+
+1. Hold <kbd>Caps Lock</kbd> and press and hold <kbd>Space</kbd>.
+2. Release Caps Lock, keeping Space held.
+3. Type <kbd>0</kbd><kbd>,</kbd> in order.
+4. Release Space.
+
+Chord opens its settings window. You have completed your first chord.
+
+## Keep chord mode open
+
+To run several chords without leaving chord mode, press Caps Lock after typing a sequence, while still holding Space. Then type another sequence.
+
+When you are finished, release Space.
+
+## Try Finder
+
+Enable the `chords-com.apple.finder` package from the `KeyChord/chords` monorepo, then focus Finder. Enter chord mode, type `gh`, and release Space.
+
+The package translates `gh` into `cmd+shift+h`, which opens your home folder. Its other bindings include `gd` for Downloads and `ga` for Applications.
+
+App-specific chords depend on the focused app. Global chords start with a symbol and work from any application.
+
+## Make your first global chord
+
+The [configuration guide](/docs/guides/configuration) shows how to define `,t` to open Terminal from anywhere, with a single TOML entry.
+
+## Useful built-ins
+
+| Chord | Action |
+| --- | --- |
+| `0,` | Open Settings |
+| `0,r` | Reload configuration and stop active loops |
+| `0lf` | Use the bottom floating layout |
+| `0ls` | Use the left sidebar layout |
+| `0q` | Quit Chord |
+
+See [all built-in commands](/docs/reference/built-in-commands).

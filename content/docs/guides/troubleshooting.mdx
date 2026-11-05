@@ -1,0 +1,46 @@
+---
+title: Troubleshooting
+description: Get activation, packages, and custom handlers working.
+---
+
+## Chord mode does not open
+
+Check **System Settings → Privacy & Security → Accessibility** and make sure Chord is enabled. Follow any relaunch prompt after changing the permission.
+
+To activate, hold Caps Lock, press and hold Space, then release Caps Lock. Space must stay held while you enter the sequence.
+
+## A chord does not run
+
+Try `0,` first. This protected built-in opens Settings without optional packages, so it helps establish that activation and completion work.
+
+For app-specific bindings, focus the intended application. For packages from a monorepo, verify the package is ticked under **Packages to use**. Complete input by releasing Space or pressing Caps Lock while holding Space.
+
+## Changes do not appear
+
+Run `0,r` to reload configuration. If you changed a TypeScript handler, rebuild its package first:
+
+```sh
+bunx vp pack
+```
+
+Chord loads generated handlers from `js/`; it does not load `src/` directly. Use `bunx vp pack --watch` while developing.
+
+## The wrong package version loads
+
+Review local folders, linked checkouts, standalone repositories, and selected monorepo packages. A local source takes precedence over GitHub sources with the same package name.
+
+The pinned default `chords-menu` and `chords-com.apple` repositories take precedence over their monorepo copies. See [installing packages](/docs/guides/packages#default-package-precedence).
+
+## A custom global chord does not load
+
+Put global bindings and their hints in the root `chords/macos.toml`. Keep application-specific bindings in their bundle-ID folders. Always single-quote sequence keys.
+
+Do not define commands in the reserved `0` namespace.
+
+## A loop keeps running
+
+Use the `0h<ID>` command displayed with the loop. To stop all active loops and reload configuration, complete `0,r`.
+
+## Find more detail
+
+The [scripting troubleshooting reference](/docs/developers/scripting#troubleshooting) covers handlers and native add-ons. Report reproducible application issues on [KeyChord/Chord](https://github.com/KeyChord/Chord/issues), with the affected package and sequence.

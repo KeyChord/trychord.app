@@ -1,0 +1,45 @@
+---
+title: Chord mode
+description: Understand activation, completion, and the chord panel.
+---
+
+## Enter and leave
+
+The default activation shortcut is **Caps Lock + Space**. Hold Caps Lock, press Space, and then release Caps Lock while keeping Space held.
+
+While chord mode is active, Chord intercepts input instead of passing it to the focused application. Type a sequence and release Space to execute it and leave chord mode.
+
+## Complete a chord
+
+You have two completion controls:
+
+- **Release Space** to execute the current chord and exit.
+- **Press Caps Lock**, keeping Space held, to execute the current chord and stay in chord mode.
+
+The letters in a chord are typed in order. They do not need to be pressed simultaneously.
+
+## Follow the hints
+
+Packages can group commands with hints. For example, the Finder package gives `g` the label **Goto**, followed by options such as `gh` for Home and `gd` for Downloads.
+
+In a TOML file, a hint starts with `?`:
+
+```toml
+[chords]
+'?g' = { name = 'Goto' }
+'gh' = { name = 'Goto Home', shortcut = 'cmd+shift+h' }
+```
+
+## Choose a layout
+
+| Chord | Layout |
+| --- | --- |
+| `0ls` or `0lsl` | Left sidebar |
+| `0lf` or `0lfb` | Bottom floating panel |
+| `0lv` | Cycle between layouts |
+
+The selected layout persists across launches. A completed chord remains visible until you start another chord or leave chord mode.
+
+## Special keys and longer sequences
+
+Use Backspace to edit input. Special-key notation, insert mode, repeat counts, and macros let a sequence do more than one simple action. See [macros and repetition](/docs/guides/macros-and-repetition) and the full [scripting reference](/docs/developers/scripting#meta-commands-repetition-and-special-keys).

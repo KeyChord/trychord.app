@@ -1,0 +1,46 @@
+---
+title: Macros and repetition
+description: Repeat an action, save a sequence, and control running loops.
+---
+
+## Repeat a chord
+
+Put a decimal count before a chord to execute it that many times. For example, `12ab` executes the binding `ab` twelve times.
+
+Without a prefix, a chord runs once. A prefix of `1` starts an **indefinite loop**: `1ab` keeps running `ab` until stopped. Use a finite count of two or more when you want a limited repeat.
+
+## Stop a loop
+
+The chord panel displays each background run's numeric ID and halt command. To stop run 12, complete `0h12`.
+
+Reloading with `0,r` or quitting Chord also stops active loops.
+
+## Add timing
+
+A leading config block in backticks controls delay and intervals. Each digit represents hundreds of milliseconds.
+
+| Input | Behavior |
+| --- | --- |
+| `` `d5`ab `` | Wait 500 ms, then run `ab` |
+| `` 3`i5`ab `` | Run `ab` three times, 500 ms apart |
+| `` 3`d2,i13`ab `` | Wait 200 ms, then repeat with 100 ms and 300 ms pauses |
+
+These examples use `ab` as a placeholder for an installed binding. The delay happens once before the first run.
+
+## Save a macro
+
+Use `0=<name>=<sequence>` to save a named macro. For example:
+
+```text
+0=window-dimensions=1720x864
+```
+
+Type `\window-dimensions=` within a later chord to insert its expansion. Type an unambiguous prefix and press Tab to complete it instead.
+
+Non-digit-prefixed names persist. Names beginning with a digit are temporary.
+
+## Use temporary buffers
+
+`0b<digit><sequence>` saves to a numbered buffer from 1 through 9. For example, `0b11720x864` stores `1720x864` in buffer 1. Use `\1` to insert that buffer into another chord.
+
+For insert mode, multi-chord sequences, and precise loop behavior, read the complete [scripting reference](/docs/developers/scripting#meta-commands-repetition-and-special-keys).
