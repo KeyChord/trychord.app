@@ -2677,19 +2677,16 @@ html:has(.lp) body {
   display: block;
   flex: none;
   width: calc(var(--mm) * var(--key-width));
-  height: calc(var(--mm) * var(--key-height));
+  height: calc(var(--mm) * 14.8);
   border-radius: calc(var(--mm) * 1.2);
   background: #050506;
   box-shadow: 0 0 0 1px rgb(0 0 0 / 0.1);
 }
 .lp .mac-key-caps {
   --key-width: 30;
-  --key-height: 14.8;
 }
-/* The bottom row of a MacBook keyboard is taller than the others. */
 .lp .mac-key-space {
   --key-width: 90.3;
-  --key-height: 17.5;
 }
 .lp .mac-key-cap {
   position: absolute;

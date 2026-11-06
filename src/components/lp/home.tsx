@@ -340,7 +340,8 @@ export function Home() {
             isRenaming={renaming === "trash"}
             onRenameComplete={rename("trash")}
             onClick={() => {
-              emptyTrash();
+              // Only the `et` chord empties the Trash; clicking refills it so the chord can run again.
+              setTrashEmptied(false);
               setSelected(selected === "trash" ? null : "trash");
             }}
             style={{ top: "70%", right: "22%" }}
