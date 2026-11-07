@@ -53,6 +53,16 @@ When those originals change, run `bun run docs:import` from this directory to re
 
 The site deploys as the **`chord-website` Cloudflare Worker** at **https://trychord.app**, with documentation under `/docs`. `wrangler.jsonc` defines the account, domain route, compatibility settings, and observability.
 
+Pushing to `prod` deploys it. Changes land on `main`, and `.github/workflows/deploy.yaml` builds and deploys whatever commit `prod` points to. Each Worker version's message names its commit. To put `main` live:
+
+```sh
+jj bookmark set prod -r main && jj git push -b prod
+```
+
+The workflow reads `CLOUDFLARE_API_TOKEN` from the repository's `production` environment, which only `prod` can use. The token comes from Cloudflare's "Edit Cloudflare Workers" template, limited to the `leonsilicon` account and the `trychord.app` zone. To roll back, push an older commit to `prod` or run `bunx wrangler rollback <version>`.
+
+To deploy from your machine instead:
+
 ```sh
 bunx wrangler login
 bun run deploy
@@ -60,7 +70,7 @@ bun run deploy
 
 `build` runs Vite on Bun by its file path, not as `bun --bun vite`. Given a package's command, `--bun` puts a `node` that is really Bun first on `PATH`, and prerendering starts `wrangler dev`, which answers every request with a 503 under Bun ([oven-sh/bun#39247](https://github.com/oven-sh/bun/issues/39247)). So prerendering needs Node to be installed.
 
-`deploy` builds the app, prerenders its pages, and publishes the Worker and static assets. The `trychord.app/*` route sends the existing proxied domain to the Worker, with HTTPS provided by Cloudflare. Keep the apex DNS record proxied: the route uses it to receive requests. Subsequent updates use the same deploy command.
+`deploy` builds the app, prerenders its pages, and publishes the Worker and static assets. The `trychord.app/*` route sends the existing proxied domain to the Worker, with HTTPS provided by Cloudflare. Keep the apex DNS record proxied: the route uses it to receive requests.
 
 Nitro uses the `cloudflare_module` preset and generates `.output/server/wrangler.json` plus `.wrangler/deploy/config.json`. Wrangler automatically follows this generated deployment configuration. The server entry, asset binding, and deployment paths come from Nitro; edit the root `wrangler.jsonc`, not the generated files.
 

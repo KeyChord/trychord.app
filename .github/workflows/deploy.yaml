@@ -1,0 +1,58 @@
+# Every push to `prod` builds the site and deploys it to the `chord-website`
+# Worker, which serves https://trychord.app. Changes land on `main`; putting
+# them live means pushing their commit to `prod`, as with Chord's releases.
+#
+# The Cloudflare API token lives in the `production` environment, which only
+# `prod` may use, so no other branch's workflow can read it.
+name: deploy
+
+on:
+  push:
+    branches:
+      - prod
+  # Redeploys `prod` without a new commit. Other branches are refused below.
+  workflow_dispatch:
+
+# Deploys run one at a time, so the last push is the one that stays live.
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: ${{ github.ref_name == 'prod' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://trychord.app
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+
+      # Prerendering starts `wrangler dev`, which needs Node (see README).
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: lts/*
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun run build
+
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN isn't set in the production environment"
+            exit 1
+          fi
+          # Cloudflare keeps the message with the version, so
+          # `wrangler deployments list` shows which commit each one is.
+          message=$(git log -1 --format='%h %s' | cut -c1-100)
+          bunx wrangler deploy --message "$message"
