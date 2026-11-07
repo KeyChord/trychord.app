@@ -5,16 +5,14 @@ import { isSpace } from "./demo";
 export function MacKeys() {
   const [spaceDown, setSpaceDown] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
-  const [capsLockPresses, setCapsLockPresses] = useState(0);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      // Browsers on macOS report Caps Lock turning on and off, not the key going down and up,
+      // so the key is drawn held for as long as Caps Lock is on, the way the browser reports it.
       setCapsLockOn(event.getModifierState("CapsLock"));
-      // Browsers on macOS report Caps Lock turning on or off rather than the key going down and
-      // up, so a press is all the page can know. It plays one instead of holding the key down.
-      if (event.key === "CapsLock") setCapsLockPresses((count) => count + 1);
       // macOS doesn't report Space coming back up while ⌘ is held.
-      else if (isSpace(event))
+      if (isSpace(event))
         setSpaceDown(event.type === "keydown" && !event.metaKey);
     };
     const onBlur = () => setSpaceDown(false);
@@ -31,12 +29,7 @@ export function MacKeys() {
   return (
     <span className="mac-keys">
       <kbd className="mac-key mac-key-caps">
-        {/* A new element restarts the press animation. */}
-        <span
-          key={capsLockPresses}
-          className="mac-key-cap"
-          data-tapped={capsLockPresses > 0 || undefined}
-        >
+        <span className="mac-key-cap" data-pressed={capsLockOn || undefined}>
           <span
             className="mac-key-led"
             data-on={capsLockOn || undefined}

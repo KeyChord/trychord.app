@@ -2630,13 +2630,27 @@ html:has(.lp) body {
   color: #fff;
   text-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
 }
-/* Clear of the Chord Mode panel in the corner, wherever the two would otherwise meet. */
+/*
+ * The Chord Mode panel floats 1rem from the bottom right corner of the window, 280px wide. At its
+ * tallest, with the Caps Lock note, it reaches 206px up, so nothing at the top or bottom of the
+ * page sits in that corner below this line.
+ */
+.lp {
+  --chord-hud-clearance: 13.5rem;
+}
 .lp .hero-download {
   margin-bottom: 5rem;
 }
+/* Narrower than this, the centred download link reaches the panel. */
 @media (width < 800px) {
   .lp .hero-download {
-    margin-bottom: 8rem;
+    margin-bottom: var(--chord-hud-clearance);
+  }
+}
+/* The footer's links end 5.75rem above its padding: the fine print's line and the gap above it. */
+@media (width >= 640px) {
+  .lp .footer-body {
+    padding-bottom: calc(var(--chord-hud-clearance) - 5.75rem);
   }
 }
 /* That panel is about keys, which a phone doesn't have. */
@@ -2706,17 +2720,6 @@ html:has(.lp) body {
   filter: brightness(0.8);
   transform: none;
   transition-duration: 40ms;
-}
-.lp .mac-key-cap[data-tapped] {
-  animation: mac-key-tap 240ms ease-out;
-}
-@keyframes mac-key-tap {
-  0%,
-  30% {
-    box-shadow: var(--cap-pressed-shadow);
-    filter: brightness(0.8);
-    transform: none;
-  }
 }
 .lp .mac-key-legend {
   position: absolute;

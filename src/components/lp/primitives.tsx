@@ -169,19 +169,18 @@ export function Footer({
 }) {
   return (
     <footer className={cx("pt-16", className)} {...props}>
-      <div className="bg-neutral-900 py-16 text-white">
+      <div className="footer-body bg-neutral-900 py-16 text-white">
         <Container className="flex flex-col gap-16">
           <div className="grid grid-cols-1 gap-x-6 gap-y-16 text-sm leading-7 lg:grid-cols-2">
             {cta}
             <nav className="grid grid-cols-2 gap-6 sm:grid-cols-4">{links}</nav>
           </div>
-          <div className="flex items-center justify-between gap-10 text-sm leading-7">
-            <div className="text-neutral-500">{fineprint}</div>
+          {/* Everything sits on the left: Chord Mode's hint floats over the bottom right corner. */}
+          <div className="flex items-center gap-6 text-sm leading-7">
             {socialLinks && (
-              <div className="flex items-center gap-4 sm:gap-10">
-                {socialLinks}
-              </div>
+              <div className="flex items-center gap-4">{socialLinks}</div>
             )}
+            <div className="text-neutral-500">{fineprint}</div>
           </div>
         </Container>
       </div>

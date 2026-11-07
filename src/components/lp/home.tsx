@@ -6,7 +6,6 @@ import { DesktopIcon, DownloadButton, QuickLook } from "./desktop";
 import { DownloadGuide, type MacDownload } from "./download-guide";
 import { MacKeys } from "./mac-keys";
 import {
-  Button,
   FollowLink,
   Footer,
   FooterCategory,
@@ -18,7 +17,6 @@ import {
   AppsSection,
   Faq,
   FaqSection,
-  PricingSection,
   Testimonial,
   TestimonialsSection,
 } from "./sections";
@@ -317,7 +315,11 @@ export function Home() {
               setSelected("packages");
               scrollTo("packages");
             }}
-            style={{ top: "55%", right: "12%" }}
+            // Raised in short windows to stay above the Chord Mode panel in the corner.
+            style={{
+              top: "min(55%, calc(100vh - var(--chord-hud-clearance) - 6.25rem))",
+              right: "12%",
+            }}
           />
           <DesktopIcon
             src="/chord-icon.png"
@@ -344,7 +346,8 @@ export function Home() {
               setTrashEmptied(false);
               setSelected(selected === "trash" ? null : "trash");
             }}
-            style={{ top: "70%", right: "22%" }}
+            // Above Packages: the Chord Mode panel covers the bottom right corner.
+            style={{ top: "36%", right: "6%" }}
           />
           <DesktopIcon
             ref={chordsIcon}
@@ -444,46 +447,6 @@ export function Home() {
             <Testimonial key={convention.name} {...convention} />
           ))}
         </TestimonialsSection>
-        <PricingSection
-          id="pricing"
-          headline="Free, on every Mac"
-          subheadline="Download Chord and use it on as many Macs as you like."
-          price="0"
-          period="forever"
-          features={[
-            "Use on all your personal Macs",
-            "All future updates included",
-            "Official packages for popular apps",
-          ]}
-          cta={
-            <Button
-              href={appleSilicon.url}
-              size="lg"
-              onClick={() => setDownload(appleSilicon)}
-            >
-              Download
-            </Button>
-          }
-          footer={
-            <>
-              <a
-                href={intel.url}
-                onClick={() => setDownload(intel)}
-                className="text-sm text-neutral-500 hover:text-neutral-700 underline underline-offset-2"
-              >
-                Download for Intel Macs
-              </a>
-              <a
-                href={githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm text-neutral-500 hover:text-neutral-700 underline underline-offset-2"
-              >
-                View the source on GitHub
-              </a>
-            </>
-          }
-        />
         <FaqSection id="faq" headline="Frequently asked questions">
           {faqs.map((faq) => (
             <Faq
