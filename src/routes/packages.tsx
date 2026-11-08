@@ -40,7 +40,7 @@ export const Route = createFileRoute("/packages")({
 
 const categories = [
   ...new Set(officialPackages.flatMap((pkg) => pkg.categories)),
-];
+].sort((a, b) => a.localeCompare(b, "en"));
 const categoryIcons = {
   Browsers: Globe,
   Editors: Code2,

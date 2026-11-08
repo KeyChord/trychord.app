@@ -1,4 +1,4 @@
-// Share the app's curated catalog without depending on sibling repos at build time.
+// Share the app's catalog without depending on sibling repos at build time.
 const source = new URL(
   "../../Chord/packages/dev/improve/chord/data/official-chord-repos/@assets/official-chord-repos.gen.json",
   import.meta.url,
