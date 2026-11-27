@@ -54,4 +54,11 @@ jobs:
           # Cloudflare keeps the message with the version, so
           # `wrangler deployments list` shows which commit each one is.
           message=$(git log -1 --format='%h %s' | cut -c1-100)
-          bunx wrangler deploy --message "$message"
+          if [ "$VITE_CHORD_CHANNEL" = staging ]; then
+            # The staging custom domain is already attached to the Worker.
+            tag="$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+            bunx wrangler versions upload --tag "$tag" --message "$message"
+            bunx wrangler versions deploy --version-tag "$tag@100%" --message "$message" --yes
+          else
+            bunx wrangler deploy --message "$message"
+          fi

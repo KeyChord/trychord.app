@@ -65,7 +65,7 @@ To promote a tested staging commit to production:
 jj bookmark set prod -r staging && jj git push -b prod
 ```
 
-The workflow reads `CLOUDFLARE_API_TOKEN` from the GitHub environment for the deploy. The `staging` environment allows the `staging` branch and the `production` environment allows `prod`. To roll back a deployment, select the corresponding Worker and version in Cloudflare.
+The workflow reads `CLOUDFLARE_API_TOKEN` from the GitHub environment for the deploy. The `staging` environment allows the `staging` branch and uses an Editor token scoped to `chord-website-staging`. CI uploads and deploys a Worker version under the existing staging custom domain. The `production` environment allows `prod`. To roll back a deployment, select the corresponding Worker and version in Cloudflare.
 
 To deploy from your machine instead:
 
