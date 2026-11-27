@@ -51,28 +51,34 @@ When those originals change, run `bun run docs:import` from this directory to re
 
 ## Deployment
 
-The site deploys as the **`chord-website` Cloudflare Worker** at **https://trychord.app**, with documentation under `/docs`. `wrangler.jsonc` defines the account, domain route, compatibility settings, and observability.
+Changes land on `main`. Push to `staging` to deploy `chord-website-staging` at **https://staging.trychord.app**, or to `prod` to deploy `chord-website` at **https://trychord.app**. The staging site links to the desktop beta downloads. The desktop release workflow redeploys the matching site after publishing.
 
-Pushing to `prod` deploys it. Changes land on `main`, and `.github/workflows/deploy.yaml` builds and deploys whatever commit `prod` points to. Each Worker version's message names its commit. To put `main` live:
+Each Worker version's message names its commit. To promote `main` to staging:
 
 ```sh
-jj bookmark set prod -r main && jj git push -b prod
+jj bookmark set staging -r main && jj git push -b staging
 ```
 
-The workflow reads `CLOUDFLARE_API_TOKEN` from the repository's `production` environment, which only `prod` can use. The token comes from Cloudflare's "Edit Cloudflare Workers" template, limited to the `leonsilicon` account and the `trychord.app` zone. To roll back, push an older commit to `prod` or run `bunx wrangler rollback <version>`.
+To promote a tested staging commit to production:
+
+```sh
+jj bookmark set prod -r staging && jj git push -b prod
+```
+
+The workflow reads `CLOUDFLARE_API_TOKEN` from the GitHub environment for the deploy. The `staging` environment allows the `staging` branch and the `production` environment allows `prod`. To roll back a deployment, select the corresponding Worker and version in Cloudflare.
 
 To deploy from your machine instead:
 
 ```sh
 bunx wrangler login
-bun run deploy
+VITE_CHORD_CHANNEL=staging bun run deploy
 ```
 
 `build` runs Vite on Bun by its file path, not as `bun --bun vite`. Given a package's command, `--bun` puts a `node` that is really Bun first on `PATH`, and prerendering starts `wrangler dev`, which answers every request with a 503 under Bun ([oven-sh/bun#39247](https://github.com/oven-sh/bun/issues/39247)). So prerendering needs Node to be installed.
 
-`deploy` builds the app, prerenders its pages, and publishes the Worker and static assets. The `trychord.app/*` route sends the existing proxied domain to the Worker, with HTTPS provided by Cloudflare. Keep the apex DNS record proxied: the route uses it to receive requests.
+`deploy` builds the app, prerenders its pages, and publishes the Worker and static assets. The production build uses the existing `trychord.app/*` route. The staging build uses a Cloudflare Custom Domain at `staging.trychord.app`.
 
-Nitro uses the `cloudflare_module` preset and generates `.output/server/wrangler.json` plus `.wrangler/deploy/config.json`. Wrangler automatically follows this generated deployment configuration. The server entry, asset binding, and deployment paths come from Nitro; edit the root `wrangler.jsonc`, not the generated files.
+Nitro uses the `cloudflare_module` preset and generates `.output/server/wrangler.json` plus `.wrangler/deploy/config.json`. Shared Worker settings come from `wrangler.jsonc` and `vite.config.ts` selects the deployment target at build time. Wrangler follows the generated configuration.
 
 Pages, fonts, and client bundles are served as Cloudflare assets. Requests to `/docs` and `/docs/*` pass through the Worker first so Markdown content negotiation still works. Search, Markdown exports, and the LLM endpoints run on Workers. OG images use Takumi's WebAssembly backend, with no native add-ons in the deployment.
 

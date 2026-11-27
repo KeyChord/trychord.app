@@ -7,7 +7,7 @@ import {
 import * as React from "react";
 import appCss from "@/styles/app.css?url";
 import { RootProvider } from "fumadocs-ui/provider/tanstack";
-import { appName } from "@/lib/shared";
+import { appName, isStagingSite } from "@/lib/shared";
 import { NavigationProgress } from "@/components/navigation-progress";
 
 export const Route = createRootRoute({
@@ -29,6 +29,7 @@ export const Route = createRootRoute({
           "Make your Mac speak your language. Learn Chord: memorable key sequences, app-specific actions, and scriptable workflows for macOS.",
       },
       { name: "theme-color", content: "#f8f7f4" },
+      ...(isStagingSite ? [{ name: "robots", content: "noindex" }] : []),
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -46,6 +47,11 @@ function RootComponent() {
       </head>
       <body className="flex flex-col min-h-screen">
         <RootProvider theme={{ defaultTheme: "light" }}>
+          {isStagingSite && (
+            <p className="bg-neutral-950 px-4 py-2 text-center text-sm font-medium text-white">
+              Chord staging · Beta builds
+            </p>
+          )}
           <NavigationProgress />
           <Outlet />
         </RootProvider>

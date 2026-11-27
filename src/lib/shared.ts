@@ -1,14 +1,15 @@
 import { createGetUrl } from "fumadocs-core/source";
 
 export const appName = "Chord";
-export const siteUrl = "https://trychord.app";
+export const isStagingSite = import.meta.env.VITE_CHORD_CHANNEL === "staging";
+export const siteUrl = isStagingSite ? "https://staging.trychord.app" : "https://trychord.app";
 export const docsRoute = "/docs";
 export const docsImageRoute = "/og/docs";
 
 export const gitConfig = {
   user: "KeyChord",
   repo: "Chord",
-  branch: "dev",
+  branch: "trunk",
 };
 
 const getDocsUrl = createGetUrl(docsRoute);

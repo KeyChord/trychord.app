@@ -8,12 +8,6 @@
   "assets": {
     "run_worker_first": ["/docs", "/docs/*"]
   },
-  "routes": [
-    {
-      "pattern": "trychord.app/*",
-      "zone_id": "be4240cf827fe36e05f3a8cadbd0f892"
-    }
-  ],
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1

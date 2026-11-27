@@ -1,21 +1,18 @@
-# Every push to `prod` builds the site and deploys it to the `chord-website`
-# Worker, which serves https://trychord.app. Changes land on `main`; putting
-# them live means pushing their commit to `prod`, as with Chord's releases.
-#
-# The Cloudflare API token lives in the `production` environment, which only
-# `prod` may use, so no other branch's workflow can read it.
+# Promote website changes from main to staging for beta testing or prod for production.
+# Each branch deploys to its own Worker and GitHub environment.
 name: deploy
 
 on:
   push:
     branches:
       - prod
-  # Redeploys `prod` without a new commit. Other branches are refused below.
+      - staging
+  # Desktop releases use this to redeploy the corresponding website branch.
   workflow_dispatch:
 
 # Deploys run one at a time, so the last push is the one that stays live.
 concurrency:
-  group: deploy-prod
+  group: deploy-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -23,11 +20,13 @@ permissions:
 
 jobs:
   deploy:
-    if: ${{ github.ref_name == 'prod' }}
+    if: ${{ github.ref == 'refs/heads/prod' || github.ref == 'refs/heads/staging' }}
     runs-on: ubuntu-latest
     environment:
-      name: production
-      url: https://trychord.app
+      name: ${{ github.ref_name == 'staging' && 'staging' || 'production' }}
+      url: ${{ github.ref_name == 'staging' && 'https://staging.trychord.app' || 'https://trychord.app' }}
+    env:
+      VITE_CHORD_CHANNEL: ${{ github.ref_name == 'staging' && 'staging' || 'production' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -49,7 +48,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
-            echo "::error::CLOUDFLARE_API_TOKEN isn't set in the production environment"
+            echo "::error::CLOUDFLARE_API_TOKEN isn't set for the $VITE_CHORD_CHANNEL deployment"
             exit 1
           fi
           # Cloudflare keeps the message with the version, so

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { gitConfig } from "@/lib/shared";
+import { gitConfig, isStagingSite } from "@/lib/shared";
 import { FeatureCarousel } from "./carousel";
 import { ChordDemo, type PageChord } from "./demo";
 import { DesktopIcon, DownloadButton, QuickLook } from "./desktop";
@@ -23,16 +23,19 @@ import {
 import { ChordTutorial, nextTutorialStep } from "./tutorial";
 
 const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`;
-const releasesUrl = `${githubUrl}/releases/latest`;
+const releasesUrl = `${githubUrl}/releases${isStagingSite ? "" : "/latest"}`;
+const downloadUrl = isStagingSite
+  ? `${releasesUrl}/download/beta`
+  : `${releasesUrl}/download`;
 const appleSilicon: MacDownload = {
   mac: "a Mac with Apple silicon",
   fileName: "Chord-aarch64.dmg",
-  url: `${releasesUrl}/download/Chord-aarch64.dmg`,
+  url: `${downloadUrl}/Chord-aarch64.dmg`,
 };
 const intel: MacDownload = {
   mac: "an Intel Mac",
   fileName: "Chord-x86_64.dmg",
-  url: `${releasesUrl}/download/Chord-x86_64.dmg`,
+  url: `${downloadUrl}/Chord-x86_64.dmg`,
 };
 
 type IconId = "packages" | "chord" | "trash" | "chords";
@@ -220,6 +223,25 @@ export function Home() {
     "enter",
   );
   const [download, setDownload] = useState<MacDownload | null>(null);
+  const [canDownload, setCanDownload] = useState(!isStagingSite);
+  useEffect(() => {
+    if (!isStagingSite) return;
+
+    const controller = new AbortController();
+    const releaseUrl = `https://api.github.com/repos/${gitConfig.user}/${gitConfig.repo}/releases/tags/beta`;
+    void fetch(releaseUrl, { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) return;
+        const release: { assets?: { name: string }[] } = await response.json();
+        if (controller.signal.aborted || !Array.isArray(release.assets)) return;
+        const files = new Set(release.assets.map(({ name }) => name));
+        setCanDownload(files.has(appleSilicon.fileName) && files.has(intel.fileName));
+      })
+      .catch(() => {
+        // The link to GitHub releases remains available if the beta status is unavailable.
+      });
+    return () => controller.abort();
+  }, []);
   const alternative = download === intel ? appleSilicon : intel;
   const scrollTo = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -238,6 +260,10 @@ export function Home() {
         keys: "dl",
         name: "Download Chord",
         run: () => {
+          if (!canDownload) {
+            window.location.href = releasesUrl;
+            return;
+          }
           setDownload(appleSilicon);
           window.location.href = appleSilicon.url;
         },
@@ -270,7 +296,7 @@ export function Home() {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps -- actions only read refs and setters
-    [trashEmptied],
+    [trashEmptied, canDownload],
   );
 
   return (
@@ -376,29 +402,37 @@ export function Home() {
             </div>
           </div>
           <div className="hero-download relative z-10 mt-auto flex flex-col items-center">
-            <p className="hero-download-note mb-2 text-sm">
-              For Macs with Apple silicon
-            </p>
-            <DownloadButton
-              href={appleSilicon.url}
-              onClick={() => setDownload(appleSilicon)}
-            >
-              <svg
-                className="w-5 h-5 -ml-1"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-              </svg>
-              Download for Mac
-            </DownloadButton>
-            <a
-              href={intel.url}
-              onClick={() => setDownload(intel)}
-              className="hero-download-note mt-4 text-sm underline underline-offset-2"
-            >
-              Download for Intel Macs
-            </a>
+            {canDownload ? (
+              <>
+                <p className="hero-download-note mb-2 text-sm">
+                  For Macs with Apple silicon
+                </p>
+                <DownloadButton
+                  href={appleSilicon.url}
+                  onClick={() => setDownload(appleSilicon)}
+                >
+                  <svg
+                    className="w-5 h-5 -ml-1"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                  </svg>
+                  {isStagingSite ? "Download beta for Mac" : "Download for Mac"}
+                </DownloadButton>
+                <a
+                  href={intel.url}
+                  onClick={() => setDownload(intel)}
+                  className="hero-download-note mt-4 text-sm underline underline-offset-2"
+                >
+                  {isStagingSite ? "Download beta for Intel Macs" : "Download for Intel Macs"}
+                </a>
+              </>
+            ) : (
+              <p className="hero-download-note text-sm">
+                Check <a href={releasesUrl} className="underline">GitHub Releases</a> for beta builds.
+              </p>
+            )}
           </div>
         </section>
         <section
@@ -476,15 +510,18 @@ export function Home() {
             <FooterCategory title="Product">
               <FooterLink href="#features">Features</FooterLink>
               <FooterLink href="/packages">Packages</FooterLink>
-              <FooterLink
-                href={appleSilicon.url}
-                onClick={() => setDownload(appleSilicon)}
-              >
-                Download
-              </FooterLink>
-              <FooterLink href={intel.url} onClick={() => setDownload(intel)}>
-                Download for Intel
-              </FooterLink>
+              {canDownload ? (
+                <>
+                  <FooterLink href={appleSilicon.url} onClick={() => setDownload(appleSilicon)}>
+                    {isStagingSite ? "Download beta" : "Download"}
+                  </FooterLink>
+                  <FooterLink href={intel.url} onClick={() => setDownload(intel)}>
+                    {isStagingSite ? "Download beta for Intel" : "Download for Intel"}
+                  </FooterLink>
+                </>
+              ) : (
+                <FooterLink href={releasesUrl}>Beta releases</FooterLink>
+              )}
             </FooterCategory>
             <FooterCategory title="Resources">
               <FooterLink href="/docs">Documentation</FooterLink>
