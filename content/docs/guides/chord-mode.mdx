@@ -1,6 +1,6 @@
 ---
 title: Chord mode
-description: Understand activation, completion, and the chord panel.
+description: Understand activation, completion, and the Hint Panel.
 ---
 
 ## Enter and leave
@@ -29,6 +29,14 @@ In a TOML file, a hint starts with `?`:
 '?g' = { name = 'Goto' }
 'gh' = { name = 'Goto Home', shortcut = 'cmd+shift+h' }
 ```
+
+## Show or hide the Hint Panel
+
+Press **Tab** in chord mode to hide the Hint Panel, and press it again to bring it back. Chord keeps reading your keys while the panel is hidden, so chords run as usual.
+
+To start with the panel hidden, turn on **Settings → General → Hide Hint Panel by default**. Tab then reveals it when you need it.
+
+While a typed escape such as `\u` is waiting for Tab, Tab completes the escape instead. See [special keys](/docs/developers/scripting#meta-commands-repetition-and-special-keys).
 
 ## Choose a layout
 

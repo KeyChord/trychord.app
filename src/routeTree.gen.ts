@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as PackagesRouteImport } from './routes/packages'
+import { Route as ApiPackagesRouteImport } from './routes/api/packages'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as DocsChar123Char125DotmdRouteImport } from './routes/docs/{$}[.]md'
@@ -36,6 +37,11 @@ const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
 const PackagesRoute = PackagesRouteImport.update({
   id: '/packages',
   path: '/packages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPackagesRoute = ApiPackagesRouteImport.update({
+  id: '/api/packages',
+  path: '/api/packages',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSearchRoute = ApiSearchRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/packages': typeof PackagesRoute
+  '/api/packages': typeof ApiPackagesRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/packages': typeof PackagesRoute
+  '/api/packages': typeof ApiPackagesRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/packages': typeof PackagesRoute
+  '/api/packages': typeof ApiPackagesRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/packages'
+    | '/api/packages'
     | '/api/search'
     | '/docs/$'
     | '/docs/{$}.md'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/packages'
+    | '/api/packages'
     | '/api/search'
     | '/docs/$'
     | '/docs/{$}.md'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/packages'
+    | '/api/packages'
     | '/api/search'
     | '/docs/$'
     | '/docs/{$}.md'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   PackagesRoute: typeof PackagesRoute
+  ApiPackagesRoute: typeof ApiPackagesRoute
   ApiSearchRoute: typeof ApiSearchRoute
   DocsSplatRoute: typeof DocsSplatRoute
   DocsChar123Char125DotmdRoute: typeof DocsChar123Char125DotmdRoute
@@ -162,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/packages'
       fullPath: '/packages'
       preLoaderRoute: typeof PackagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/packages': {
+      id: '/api/packages'
+      path: '/api/packages'
+      fullPath: '/api/packages'
+      preLoaderRoute: typeof ApiPackagesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/search': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   PackagesRoute: PackagesRoute,
+  ApiPackagesRoute: ApiPackagesRoute,
   ApiSearchRoute: ApiSearchRoute,
   DocsSplatRoute: DocsSplatRoute,
   DocsChar123Char125DotmdRoute: DocsChar123Char125DotmdRoute,

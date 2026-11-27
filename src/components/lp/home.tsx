@@ -376,6 +376,9 @@ export function Home() {
             </div>
           </div>
           <div className="hero-download relative z-10 mt-auto flex flex-col items-center">
+            <p className="hero-download-note mb-2 text-sm">
+              For Macs with Apple silicon
+            </p>
             <DownloadButton
               href={appleSilicon.url}
               onClick={() => setDownload(appleSilicon)}
@@ -389,13 +392,10 @@ export function Home() {
               </svg>
               Download for Mac
             </DownloadButton>
-            <p className="hero-download-note mt-4 text-sm">
-              For Macs with Apple silicon
-            </p>
             <a
               href={intel.url}
               onClick={() => setDownload(intel)}
-              className="hero-download-note mt-1 text-sm underline underline-offset-2"
+              className="hero-download-note mt-4 text-sm underline underline-offset-2"
             >
               Download for Intel Macs
             </a>

@@ -67,7 +67,7 @@ the file so the controls remain available without external package sources.
 Leading decimal digits set a chord's repeat count: `12ab` executes `ab` twelve times.
 Without a prefix the chord executes once; the prefix `1` starts an indefinite loop.
 For example, `1ab` keeps executing `ab` after the keys are released, chord mode ends,
-or another chord runs. Each loop receives a distinct ID displayed in the chord panel
+or another chord runs. Each loop receives a distinct ID displayed in the Hint Panel
 alongside its `0h<ID>` command. Halting a loop stops further iterations. An in-flight
 JavaScript callback finishes before its values are released, preserving other handlers
 in the same package worker. Shell commands are cancelled and simulated shortcut keys
@@ -139,7 +139,9 @@ For example, `'a\up'` matches `a` followed by the Up arrow. In chord mode, a typ
 escape never expands on its own: `\up` stays three keys, and the input stays pending,
 until Tab replaces it with the highlighted suggestion. Any unambiguous prefix works,
 so `\u` then Tab enters the Up arrow, as does `\up` then Tab. Numbered buffer
-references (`\1`–`\9`) are the exception and need no Tab. Backslash is reserved for
+references (`\1`–`\9`) are the exception and need no Tab. Tab belongs to an escape
+only while one is waiting for it; otherwise Tab shows or hides the Hint Panel.
+Backslash is reserved for
 special keys and macro references; bare or unknown escapes cannot define chords or
 help hints. Inside parenthesized regex sections, backslash keeps its regex meaning
 (for example, `(\d+)`). Use literal TOML strings (single quotes) to preserve
@@ -425,8 +427,8 @@ Chord registers the `chord:` URL scheme on macOS so scripts and launcher tools c
 - `show-settings`
 - `reload-config`
 - `reload-configs`
-- `add-package?repo=<owner/name>` — installs a package from the official Browse
-  catalog, opens Settings → Browse, and reloads packages. Existing installations
+- `add-package?repo=<owner/name>` — opens Settings → Chords and asks before
+  installing a KeyChord package mirror. Chord reloads after installation. Existing installations
   keep their selected version. Links received during startup wait for the initial
   package load. Other repositories must be added through Settings → Chords.
 
@@ -452,7 +454,7 @@ open 'chord://add-package?repo=KeyChord%2Fchords-vscode'
 ## CLI
 
 The Chord app's executable doubles as a `chord` CLI. To put it on your `PATH`, open
-**Settings → General → Command Line** and click **Add chord to PATH**, which links
+**Settings → Advanced → Command Line** and click **Install command…**, which links
 `/usr/local/bin/chord` to the app (macOS may ask for your password). Development builds use the
 name `chordd`. Run `chord --help` for the full list.
 
@@ -662,5 +664,5 @@ supported and use the same compact keycap display.
 
 The core `@keychord/chords-chord` package defines repeat-count help with
 `'?"1-9"' = { name = "Repeat count" }`. The panel extends this range to `0-9`
-after a numeric prefix. At the start of a sequence, `0` (Chord settings) and
-`1` (Loop chord) also keep their dedicated rows.
+after a numeric prefix. At the start of a sequence, `0` (Chord settings) keeps
+its dedicated row.

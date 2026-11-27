@@ -1,0 +1,406 @@
+{
+  "aerospace": {
+    "category": "Window Management",
+    "icon": "/apps/aerospace.png",
+    "label": "AeroSpace"
+  },
+  "betterdisplay": {
+    "category": "Utilities",
+    "icon": "/apps/betterdisplay.png",
+    "label": "BetterDisplay"
+  },
+  "chord": {
+    "category": "Chord",
+    "icon": "/chord-icon.png",
+    "label": "Chord Controls"
+  },
+  "chromium": {
+    "category": "Browsers",
+    "icon": "/apps/chrome.png",
+    "label": "Chromium",
+    "search": "Google Chrome Brave Edge Opera Vivaldi"
+  },
+  "click": {
+    "category": "Input",
+    "label": "Click"
+  },
+  "com.apple": {
+    "category": "macOS",
+    "label": "macOS App Stubs"
+  },
+  "com.apple.accessibilityinspector": {
+    "icon": "/apps/accessibility-inspector.png",
+    "label": "Accessibility Inspector"
+  },
+  "com.apple.activitymonitor": {
+    "icon": "/apps/activity-monitor.png",
+    "label": "Activity Monitor"
+  },
+  "com.apple.addressbook": {
+    "icon": "/package-icons/com.apple.addressbook.webp",
+    "label": "Contacts"
+  },
+  "com.apple.airport.airportutility": {
+    "icon": "/package-icons/com.apple.airport.airportutility.webp",
+    "label": "AirPort Utility"
+  },
+  "com.apple.appleseed.feedbackassistant": {
+    "icon": "/package-icons/com.apple.appleseed.feedbackassistant.webp",
+    "label": "Feedback Assistant"
+  },
+  "com.apple.appstore": {
+    "icon": "/package-icons/com.apple.appstore.webp",
+    "label": "App Store"
+  },
+  "com.apple.archiveutility": {
+    "icon": "/package-icons/com.apple.archiveutility.webp",
+    "label": "Archive Utility"
+  },
+  "com.apple.audio.audiomidisetup": {
+    "icon": "/package-icons/com.apple.audio.audiomidisetup.webp",
+    "label": "Audio MIDI Setup"
+  },
+  "com.apple.automator": {
+    "icon": "/package-icons/com.apple.automator.webp",
+    "label": "Automator"
+  },
+  "com.apple.bluetoothfileexchange": {
+    "icon": "/package-icons/com.apple.bluetoothfileexchange.webp",
+    "label": "Bluetooth File Exchange"
+  },
+  "com.apple.calculator": {
+    "icon": "/package-icons/com.apple.calculator.webp",
+    "label": "Calculator"
+  },
+  "com.apple.chess": {
+    "icon": "/package-icons/com.apple.chess.webp",
+    "label": "Chess"
+  },
+  "com.apple.clock": {
+    "icon": "/package-icons/com.apple.clock.webp",
+    "label": "Clock"
+  },
+  "com.apple.colorsyncutility": {
+    "icon": "/package-icons/com.apple.colorsyncutility.webp",
+    "label": "ColorSync Utility"
+  },
+  "com.apple.console": {
+    "icon": "/package-icons/com.apple.console.webp",
+    "label": "Console"
+  },
+  "com.apple.deskcam": {
+    "icon": "/package-icons/com.apple.deskcam.webp",
+    "label": "Desk View"
+  },
+  "com.apple.dictionary": {
+    "icon": "/package-icons/com.apple.dictionary.webp",
+    "label": "Dictionary"
+  },
+  "com.apple.digitalcolormeter": {
+    "icon": "/package-icons/com.apple.digitalcolormeter.webp",
+    "label": "Digital Color Meter"
+  },
+  "com.apple.directoryutility": {
+    "icon": "/package-icons/com.apple.directoryutility.webp",
+    "label": "Directory Utility"
+  },
+  "com.apple.diskutility": {
+    "icon": "/package-icons/com.apple.diskutility.webp",
+    "label": "Disk Utility"
+  },
+  "com.apple.dvdplayer": {
+    "icon": "/package-icons/com.apple.dvdplayer.webp",
+    "label": "DVD Player"
+  },
+  "com.apple.facetime": {
+    "icon": "/package-icons/com.apple.facetime.webp",
+    "label": "FaceTime"
+  },
+  "com.apple.finder": {
+    "icon": "/apps/finder.png",
+    "label": "Finder"
+  },
+  "com.apple.findmy": {
+    "icon": "/package-icons/com.apple.findmy.webp",
+    "label": "Find My"
+  },
+  "com.apple.folderactionssetup": {
+    "icon": "/package-icons/com.apple.folderactionssetup.webp",
+    "label": "Folder Actions Setup"
+  },
+  "com.apple.fontbook": {
+    "icon": "/package-icons/com.apple.fontbook.webp",
+    "label": "Font Book"
+  },
+  "com.apple.freeform": {
+    "icon": "/package-icons/com.apple.freeform.webp",
+    "label": "Freeform"
+  },
+  "com.apple.games": {
+    "icon": "/package-icons/com.apple.games.webp",
+    "label": "Games"
+  },
+  "com.apple.generativeplaygroundapp": {
+    "icon": "/package-icons/com.apple.generativeplaygroundapp.webp",
+    "label": "Image Playground"
+  },
+  "com.apple.grapher": {
+    "icon": "/package-icons/com.apple.grapher.webp",
+    "label": "Grapher"
+  },
+  "com.apple.helpviewer": {
+    "icon": "/package-icons/com.apple.helpviewer.webp",
+    "label": "Tips"
+  },
+  "com.apple.home": {
+    "icon": "/package-icons/com.apple.home.webp",
+    "label": "Home"
+  },
+  "com.apple.ibooksx": {
+    "icon": "/package-icons/com.apple.ibooksx.webp",
+    "label": "Books"
+  },
+  "com.apple.ical": {
+    "icon": "/package-icons/com.apple.ical.webp",
+    "label": "Calendar"
+  },
+  "com.apple.image_capture": {
+    "icon": "/package-icons/com.apple.image_capture.webp",
+    "label": "Image Capture"
+  },
+  "com.apple.journal": {
+    "icon": "/package-icons/com.apple.journal.webp",
+    "label": "Journal"
+  },
+  "com.apple.keychainaccess": {
+    "icon": "/package-icons/com.apple.keychainaccess.webp",
+    "label": "Keychain Access"
+  },
+  "com.apple.magnifier": {
+    "icon": "/package-icons/com.apple.magnifier.webp",
+    "label": "Magnifier"
+  },
+  "com.apple.mail": {
+    "icon": "/package-icons/com.apple.mail.webp",
+    "label": "Mail"
+  },
+  "com.apple.maps": {
+    "icon": "/package-icons/com.apple.maps.webp",
+    "label": "Maps"
+  },
+  "com.apple.migrateassistant": {
+    "icon": "/package-icons/com.apple.migrateassistant.webp",
+    "label": "Migration Assistant"
+  },
+  "com.apple.mobilephone": {
+    "icon": "/package-icons/com.apple.mobilephone.webp",
+    "label": "Phone"
+  },
+  "com.apple.mobilesms": {
+    "icon": "/package-icons/com.apple.mobilesms.webp",
+    "label": "Messages"
+  },
+  "com.apple.music": {
+    "icon": "/package-icons/com.apple.music.webp",
+    "label": "Music"
+  },
+  "com.apple.news": {
+    "icon": "/package-icons/com.apple.news.webp",
+    "label": "News"
+  },
+  "com.apple.notes": {
+    "icon": "/package-icons/com.apple.notes.webp",
+    "label": "Notes"
+  },
+  "com.apple.passwords": {
+    "icon": "/package-icons/com.apple.passwords.webp",
+    "label": "Passwords"
+  },
+  "com.apple.photobooth": {
+    "icon": "/package-icons/com.apple.photobooth.webp",
+    "label": "Photo Booth"
+  },
+  "com.apple.photos": {
+    "icon": "/package-icons/com.apple.photos.webp",
+    "label": "Photos"
+  },
+  "com.apple.podcasts": {
+    "icon": "/package-icons/com.apple.podcasts.webp",
+    "label": "Podcasts"
+  },
+  "com.apple.preview": {
+    "icon": "/package-icons/com.apple.preview.webp",
+    "label": "Preview"
+  },
+  "com.apple.printcenter": {
+    "icon": "/package-icons/com.apple.printcenter.webp",
+    "label": "Print Center"
+  },
+  "com.apple.quicktimeplayerx": {
+    "icon": "/package-icons/com.apple.quicktimeplayerx.webp",
+    "label": "QuickTime Player"
+  },
+  "com.apple.reminders": {
+    "icon": "/package-icons/com.apple.reminders.webp",
+    "label": "Reminders"
+  },
+  "com.apple.safari": {
+    "category": "Browsers",
+    "icon": "/apps/safari.png",
+    "label": "Safari"
+  },
+  "com.apple.screencaptureui": {
+    "icon": "/package-icons/com.apple.screencaptureui.webp",
+    "label": "Screenshot"
+  },
+  "com.apple.screencontinuity": {
+    "icon": "/package-icons/com.apple.screencontinuity.webp",
+    "label": "iPhone Mirroring"
+  },
+  "com.apple.screensharing": {
+    "icon": "/package-icons/com.apple.screensharing.webp",
+    "label": "Screen Sharing"
+  },
+  "com.apple.scripteditor2": {
+    "icon": "/package-icons/com.apple.scripteditor2.webp",
+    "label": "Script Editor"
+  },
+  "com.apple.shortcuts": {
+    "icon": "/package-icons/com.apple.shortcuts.webp",
+    "label": "Shortcuts"
+  },
+  "com.apple.spotlight": {
+    "icon": "/package-icons/com.apple.spotlight.webp",
+    "label": "Spotlight"
+  },
+  "com.apple.stickies": {
+    "icon": "/package-icons/com.apple.stickies.webp",
+    "label": "Stickies"
+  },
+  "com.apple.stocks": {
+    "icon": "/package-icons/com.apple.stocks.webp",
+    "label": "Stocks"
+  },
+  "com.apple.systempreferences": {
+    "icon": "/apps/system-settings.png",
+    "label": "System Settings",
+    "search": "System Preferences"
+  },
+  "com.apple.systemprofiler": {
+    "icon": "/package-icons/com.apple.systemprofiler.webp",
+    "label": "System Information"
+  },
+  "com.apple.textedit": {
+    "icon": "/package-icons/com.apple.textedit.webp",
+    "label": "TextEdit"
+  },
+  "com.apple.ticket-viewer": {
+    "icon": "/package-icons/com.apple.ticket-viewer.webp",
+    "label": "Ticket Viewer"
+  },
+  "com.apple.tv": {
+    "icon": "/package-icons/com.apple.tv.webp",
+    "label": "TV"
+  },
+  "com.apple.voicememos": {
+    "icon": "/package-icons/com.apple.voicememos.webp",
+    "label": "Voice Memos"
+  },
+  "com.apple.voiceoverutility": {
+    "icon": "/package-icons/com.apple.voiceoverutility.webp",
+    "label": "VoiceOver Utility"
+  },
+  "com.apple.weather": {
+    "icon": "/package-icons/com.apple.weather.webp",
+    "label": "Weather"
+  },
+  "com.apple.wifi.diagnostics": {
+    "icon": "/package-icons/com.apple.wifi.diagnostics.webp",
+    "label": "Wireless Diagnostics"
+  },
+  "dock": {
+    "category": "macOS",
+    "label": "Dock"
+  },
+  "instagram": {
+    "category": "Social",
+    "label": "Instagram"
+  },
+  "jetbrains": {
+    "category": "Editors",
+    "label": "JetBrains",
+    "search": "IntelliJ IDEA WebStorm PyCharm Rider CLion GoLand DataGrip"
+  },
+  "livesplit": {
+    "category": "Utilities",
+    "label": "LiveSplit"
+  },
+  "menu": {
+    "category": "macOS",
+    "label": "Menu"
+  },
+  "modifiers": {
+    "category": "Input",
+    "label": "Modifier Keys"
+  },
+  "monitors": {
+    "category": "Window Management",
+    "label": "Monitors"
+  },
+  "navigation": {
+    "category": "Input",
+    "label": "Navigation"
+  },
+  "raycast": {
+    "category": "Utilities",
+    "icon": "/apps/raycast.png",
+    "label": "Raycast"
+  },
+  "rift": {
+    "category": "Window Management",
+    "label": "Rift"
+  },
+  "spaces": {
+    "category": "Window Management",
+    "icon": "/apps/mission-control.png",
+    "label": "Spaces"
+  },
+  "spotify": {
+    "category": "Media",
+    "icon": "/package-icons/spotify.webp",
+    "label": "Spotify"
+  },
+  "terminal": {
+    "category": "Terminals",
+    "icon": "/apps/terminal.png",
+    "label": "Terminal"
+  },
+  "vscode": {
+    "category": "Editors",
+    "icon": "/apps/vscode.png",
+    "label": "VS Code",
+    "search": "Visual Studio Code"
+  },
+  "warp": {
+    "category": "Terminals",
+    "icon": "/apps/warp.png",
+    "label": "Warp"
+  },
+  "web": {
+    "category": "Browsers",
+    "label": "Web"
+  },
+  "whatsapp": {
+    "category": "Social",
+    "icon": "/package-icons/whatsapp.webp",
+    "label": "WhatsApp"
+  },
+  "windows": {
+    "category": "Window Management",
+    "label": "Windows"
+  },
+  "youtube": {
+    "category": "Media",
+    "label": "YouTube"
+  }
+}

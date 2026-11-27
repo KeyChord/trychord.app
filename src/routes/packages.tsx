@@ -3,151 +3,163 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import {
   ArrowRight,
   BookOpen,
-  Check,
   Code2,
   Download,
   ExternalLink,
-  FolderGit2,
   Globe,
   Grid2X2,
+  Keyboard,
+  Monitor,
+  Music2,
   Package,
   Search,
   Terminal,
   X,
 } from "lucide-react";
-import { useState } from "react";
-import officialPackages from "@/data/official-packages.json";
+import { useEffect, useRef, useState } from "react";
+import artwork from "@/data/package-artwork.json";
 import { baseOptions } from "@/lib/layout.shared";
 import { appName, siteUrl } from "@/lib/shared";
 import "@/styles/packages.css";
 
 const description =
-  "Browse official Chord packages for your Mac. Find ready-made key sequences for browsers, editors, terminals, and window management.";
+  "Browse official Chord packages and install ready-made key sequences for your apps.";
+const collectionUrl = "https://github.com/KeyChord/chords";
 
 export const Route = createFileRoute("/packages")({
   component: Packages,
   head: () => ({
     links: [{ rel: "canonical", href: `${siteUrl}/packages` }],
     meta: [
-      { title: `Packages | ${appName}` },
+      { title: `Browse Chords | ${appName}` },
       { name: "description", content: description },
-      { property: "og:title", content: `Packages | ${appName}` },
+      { property: "og:title", content: `Browse Chords | ${appName}` },
       { property: "og:description", content: description },
       { property: "og:url", content: `${siteUrl}/packages` },
     ],
   }),
 });
 
-const categories = [
-  ...new Set(officialPackages.flatMap((pkg) => pkg.categories)),
-];
 const categoryIcons = {
   Browsers: Globe,
   Editors: Code2,
+  Input: Keyboard,
+  macOS: Monitor,
+  Media: Music2,
   Terminals: Terminal,
   "Window Management": Grid2X2,
 };
+const presentation: Record<
+  string,
+  { label?: string; icon?: string; category?: string; search?: string }
+> = artwork;
+
+function describePackage(name: string) {
+  const slug = name.slice("chords-".length).toLowerCase();
+  const decoration = presentation[slug];
+  const label =
+    decoration?.label ??
+    name
+      .replace(/^chords-(?:com\.apple\.)?/i, "")
+      .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+      .replace(/[._-]+/g, " ")
+      .replace(/\b[a-z]/g, (first) => first.toUpperCase());
+  return {
+    name,
+    label,
+    category:
+      decoration?.category ??
+      (slug.startsWith("com.apple.") ? "macOS" : "Other"),
+    icon: decoration?.icon,
+    search: decoration?.search ?? "",
+  };
+}
+
+type ChordPackage = ReturnType<typeof describePackage>;
+type Catalog =
+  | { status: "loading" | "error" }
+  | { status: "ready"; packages: ChordPackage[] };
+const byLabel = new Intl.Collator("en", { numeric: true });
 
 function Packages() {
+  const [catalog, setCatalog] = useState<Catalog>({ status: "loading" });
+  const [request, setRequest] = useState(0);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<string | null>(null);
-  const [sort, setSort] = useState("featured");
-  const query = search.trim().toLowerCase();
-  const filteredPackages = officialPackages
-    .filter(
-      (pkg) =>
-        (category === null || pkg.categories.includes(category)) &&
-        `${pkg.displayName} ${pkg.packageName} ${pkg.description} ${pkg.categories.join(" ")} ${pkg.url}`
-          .toLowerCase()
-          .includes(query),
-    )
-    .sort((a, b) =>
-      sort === "name" ? a.displayName.localeCompare(b.displayName) : 0,
-    );
+  const [category, setCategory] = useState("");
+  const [selected, setSelected] = useState<ChordPackage | null>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
 
-  function clearFilters() {
-    setSearch("");
-    setCategory(null);
-  }
+  useEffect(() => {
+    const abort = new AbortController();
+    async function loadCatalog() {
+      try {
+        const response = await fetch("/api/packages", { signal: abort.signal });
+        if (!response.ok) throw new Error("Couldn't load Chord packages");
+        const names: string[] = await response.json();
+        if (abort.signal.aborted) return;
+        const packages = names
+          .map(describePackage)
+          .sort((a, b) => byLabel.compare(a.label, b.label));
+        setCatalog({ status: "ready", packages });
+      } catch {
+        if (!abort.signal.aborted) setCatalog({ status: "error" });
+      }
+    }
+    void loadCatalog();
+    return () => abort.abort();
+  }, [request]);
+
+  const packages = catalog.status === "ready" ? catalog.packages : [];
+  const categories = [...new Set(packages.map((pkg) => pkg.category))].sort(
+    byLabel.compare,
+  );
+  const query = search.trim().toLowerCase();
+  const filtered = packages.filter(
+    (pkg) =>
+      (!category || pkg.category === category) &&
+      `${pkg.label} ${pkg.name} ${pkg.category} ${pkg.search}`
+        .toLowerCase()
+        .includes(query),
+  );
 
   return (
     <HomeLayout {...baseOptions()}>
       <div id="main-content" className="packages-page">
         <header className="packages-heading">
-          <p className="eyebrow">
-            <span className="status-dot" /> THE OFFICIAL COLLECTION
-          </p>
-          <div className="packages-heading-row">
-            <div>
-              <h1>
-                Packages<span className="accent">.</span>
-              </h1>
-              <p>
-                Ready-made chords for the apps you use. Find your next shortcut.
-              </p>
-            </div>
-            <Link
-              to="/docs/$"
-              params={{ _splat: "guides/packages" }}
-              className="button-secondary"
-            >
-              <BookOpen size={15} /> How to install
-            </Link>
+          <div>
+            <h1>
+              Browse Chords<span className="accent">.</span>
+            </h1>
+            <p>Find ready-made chords for the apps you use.</p>
           </div>
+          <Link
+            to="/docs/$"
+            params={{ _splat: "guides/packages" }}
+            className="button-secondary"
+          >
+            <BookOpen size={16} /> How to install
+          </Link>
         </header>
 
-        <div className="packages-browser">
-          <aside className="packages-sidebar" aria-label="Package categories">
-            <h2 className="packages-label">CATEGORIES</h2>
-            <div
-              className="packages-categories"
-              role="group"
-              aria-label="Filter by category"
+        {catalog.status === "error" ? (
+          <div className="packages-message" role="alert">
+            <h2>Couldn’t load the catalog</h2>
+            <button
+              type="button"
+              onClick={() => {
+                setCatalog({ status: "loading" });
+                setRequest((current) => current + 1);
+              }}
             >
-              <button
-                type="button"
-                aria-pressed={category === null}
-                onClick={() => setCategory(null)}
-              >
-                <Package size={16} /> All packages
-                <span>{officialPackages.length}</span>
-              </button>
-              {categories.map((name) => {
-                const Icon =
-                  categoryIcons[name as keyof typeof categoryIcons] ?? Package;
-                return (
-                  <button
-                    type="button"
-                    key={name}
-                    aria-pressed={category === name}
-                    onClick={() => setCategory(name)}
-                  >
-                    <Icon size={16} /> {name}
-                    <span>
-                      {
-                        officialPackages.filter((pkg) =>
-                          pkg.categories.includes(name),
-                        ).length
-                      }
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="packages-install-note">
-              <h2>A little setup. A lot less clicking.</h2>
-              <p>
-                In Chord, open <strong>Settings → Browse</strong> and choose
-                Install next to a package.
-              </p>
-              <Link to="/docs/$" params={{ _splat: "guides/packages" }}>
-                Installation guide <ArrowRight size={13} />
-              </Link>
-            </div>
-          </aside>
-
+              Try again
+            </button>
+            <a href={collectionUrl}>
+              View packages on GitHub <ArrowRight size={15} />
+            </a>
+          </div>
+        ) : (
           <section
-            className="packages-results"
+            className="packages-browser"
             aria-label="Official Chord packages"
           >
             <div className="packages-toolbar">
@@ -166,127 +178,169 @@ function Packages() {
                     aria-label="Clear search"
                     onClick={() => setSearch("")}
                   >
-                    <X size={15} />
+                    <X size={16} />
                   </button>
                 )}
               </div>
               <select
-                aria-label="Sort packages"
-                value={sort}
-                onChange={(event) => setSort(event.target.value)}
+                aria-label="Filter by category"
+                value={category}
+                disabled={catalog.status === "loading"}
+                onChange={(event) => setCategory(event.target.value)}
               >
-                <option value="featured">Featured</option>
-                <option value="name">Name: A–Z</option>
+                <option value="">All categories</option>
+                {categories.map((name) => (
+                  <option key={name}>{name}</option>
+                ))}
               </select>
             </div>
 
-            <div className="packages-results-heading">
-              <h2>{category ?? "All packages"}</h2>
-              <span role="status" aria-live="polite">
-                {filteredPackages.length}{" "}
-                {filteredPackages.length === 1 ? "package" : "packages"}
-              </span>
-            </div>
+            <p className="packages-count" role="status">
+              {catalog.status === "loading"
+                ? "Loading packages…"
+                : `${filtered.length} ${filtered.length === 1 ? "package" : "packages"}`}
+            </p>
 
-            {filteredPackages.length > 0 ? (
-              <div className="packages-list">
-                {filteredPackages.map((pkg) => {
-                  const Icon =
-                    categoryIcons[
-                      pkg.categories[0] as keyof typeof categoryIcons
-                    ] ?? Package;
-                  return (
-                    <article key={pkg.packageName} className="package-row">
-                      <div className="package-icon" aria-hidden="true">
-                        <Icon size={23} strokeWidth={1.5} />
-                      </div>
-                      <div className="package-details">
-                        <div className="package-title">
-                          <h3>
-                            <a href={pkg.url} target="_blank" rel="noreferrer">
-                              {pkg.displayName}
-                            </a>
-                          </h3>
-                          {pkg.categories.map((name) => (
-                            <span className="package-category" key={name}>
-                              {name}
-                            </span>
-                          ))}
-                        </div>
-                        <p>{pkg.description}</p>
-                        <div className="package-meta">
-                          <span className="package-publisher">
-                            <Check size={11} /> KeyChord
-                          </span>
-                          <span className="package-repository">
-                            <FolderGit2 size={13} />{" "}
-                            {pkg.url.replace("https://github.com/", "")}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="package-actions">
-                        <a
-                          className="package-add"
-                          href={`chord://add-package?repo=${encodeURIComponent(pkg.url.replace("https://github.com/", ""))}`}
-                          aria-label={`Add ${pkg.displayName} to Chord`}
-                        >
-                          <Download size={13} /> Add to Chord
-                        </a>
-                        <a
-                          className="package-source"
-                          href={pkg.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label={`View ${pkg.displayName} on GitHub`}
-                        >
-                          View source <ExternalLink size={13} />
-                        </a>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="packages-empty">
-                <Search size={26} strokeWidth={1.5} aria-hidden="true" />
-                <h3>No matching packages</h3>
-                <p>Try another search or choose a different category.</p>
-                <button type="button" onClick={clearFilters}>
-                  Clear filters <X size={13} />
+            {filtered.length > 0 && (
+              <ul className="packages-grid">
+                {filtered.map((pkg) => (
+                  <li key={pkg.name}>
+                    <button
+                      type="button"
+                      className="package-tile"
+                      aria-haspopup="dialog"
+                      onClick={() => {
+                        setSelected(pkg);
+                        dialog.current?.showModal();
+                      }}
+                    >
+                      <PackageIcon pkg={pkg} />
+                      <span>{pkg.label}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {catalog.status === "ready" && filtered.length === 0 && (
+              <div className="packages-message">
+                <h2>No matching packages</h2>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch("");
+                    setCategory("");
+                  }}
+                >
+                  Clear filters
                 </button>
               </div>
             )}
-
-            <div className="packages-collection-link">
-              <span>Looking for more chords?</span>
-              <a
-                href="https://github.com/KeyChord/chords"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Explore the full collection <ArrowRight size={14} />
-              </a>
-            </div>
           </section>
-        </div>
+        )}
 
-        <footer className="packages-contribute">
-          <Code2 size={21} strokeWidth={1.5} aria-hidden="true" />
-          <div>
-            <h2>Your workflow, your chords.</h2>
-            <p>
-              Build a package for the way you work and share it with everyone.
-            </p>
-          </div>
-          <Link
-            to="/docs/$"
-            params={{ _splat: "developers/create-package" }}
-            className="text-link"
-          >
+        <footer className="packages-footer">
+          <a href="https://github.com/search?q=topic%3Achordpack+-org%3AKeyChord&type=repositories">
+            Community packages <ExternalLink size={14} />
+          </a>
+          <Link to="/docs/$" params={{ _splat: "developers/create-package" }}>
             Create a package <ArrowRight size={15} />
           </Link>
         </footer>
+
+        <dialog
+          ref={dialog}
+          className="package-dialog"
+          aria-labelledby="package-title"
+          onClose={() => setSelected(null)}
+        >
+          <form method="dialog">
+            <button
+              type="submit"
+              className="package-close"
+              aria-label="Close package details"
+            >
+              <X size={19} />
+            </button>
+          </form>
+          {selected && <PackageDetails key={selected.name} pkg={selected} />}
+        </dialog>
       </div>
     </HomeLayout>
+  );
+}
+
+function PackageIcon({ pkg }: { pkg: ChordPackage }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const Icon =
+    categoryIcons[pkg.category as keyof typeof categoryIcons] ?? Package;
+  return pkg.icon && !imageFailed ? (
+    <img
+      className="package-icon"
+      src={pkg.icon}
+      alt=""
+      width={64}
+      height={64}
+      loading="lazy"
+      decoding="async"
+      onError={() => setImageFailed(true)}
+    />
+  ) : (
+    <span className="package-icon package-icon-fallback" aria-hidden="true">
+      <Icon size={28} strokeWidth={1.6} />
+    </span>
+  );
+}
+
+function PackageDetails({ pkg }: { pkg: ChordPackage }) {
+  const [description, setDescription] = useState("");
+  const slug = `KeyChord/${pkg.name}`;
+  const repo = `https://github.com/${slug}`;
+
+  useEffect(() => {
+    const abort = new AbortController();
+    const manifest = `https://raw.githubusercontent.com/KeyChord/chords/HEAD/@keychord/${encodeURIComponent(pkg.name)}/package.json`;
+    async function loadDescription() {
+      try {
+        const response = await fetch(manifest, { signal: abort.signal });
+        if (!response.ok) return;
+        const metadata: { description?: unknown } = await response.json();
+        if (!abort.signal.aborted && typeof metadata.description === "string") {
+          setDescription(metadata.description);
+        }
+      } catch {
+        // Source and install links are available as soon as the catalog loads.
+      }
+    }
+    void loadDescription();
+    return () => abort.abort();
+  }, [pkg.name]);
+
+  return (
+    <>
+      <div className="package-detail-heading">
+        <PackageIcon pkg={pkg} />
+        <div>
+          <h2 id="package-title">{pkg.label}</h2>
+          <p>{slug}</p>
+        </div>
+      </div>
+      {description && <p className="package-description">{description}</p>}
+      <div className="package-actions">
+        <a
+          className="package-add"
+          href={`chord://add-package?repo=${encodeURIComponent(slug)}`}
+        >
+          <Download size={16} /> Add to Chord
+        </a>
+        <a
+          className="button-secondary"
+          href={repo}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View source <ExternalLink size={14} />
+        </a>
+      </div>
+    </>
   );
 }

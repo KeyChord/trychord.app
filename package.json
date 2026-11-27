@@ -12,8 +12,7 @@
     "deploy": "bun run build && wrangler deploy",
     "cf:types": "wrangler types --config .output/server/wrangler.json worker-configuration.d.ts",
     "types:check": "tsc --noEmit",
-    "docs:import": "bun scripts/import-docs.ts",
-    "packages:import": "bun scripts/import-packages.ts"
+    "docs:import": "bun scripts/import-docs.ts"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",
